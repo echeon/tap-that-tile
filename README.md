@@ -2,7 +2,7 @@
 
 ### Background
 
-Piano Tiles is a game where the player's objective is to tap black tiles while avoiding white tiles. The tiles will fly from top of the screen to the bottom of the screen in a straight line. When each tile is tapped, the player will hear a piano sound. The speed of tiles coming down will increase as the player keeps tapping more black tiles. The game ends when the player taps a white tile, or when a black tile disappears to the bottom of the screen.
+Piano Tiles is a game where the player's objective is to tap black tiles while avoiding white tiles. The tiles will fall from top of the screen to the bottom of the screen in a straight line. When each tile is tapped, the player will hear a piano sound. The speed of tiles coming down will increase as the player keeps tapping more black tiles. The game ends when the player taps a white tile, or when a black tile disappears to the bottom of the screen.
 
 
 ### Functionality & MVP  
