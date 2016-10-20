@@ -1,0 +1,14 @@
+body {
+  /*background: lightgreen;*/
+}
+
+#canvas {
+  background-image: url("../img/background.jpg");
+  display: block;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
