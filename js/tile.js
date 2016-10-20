@@ -18,17 +18,25 @@ class Tile {
   }
 
   update() {
-    this.coordY += 2;
+    this.coordY += 10;
   }
 
   handleTap() {
     this.tapped = !this.tapped;
   }
 
-  handleColorChange() {
+  changeColor() {
     const tappedBlack = "rgba(0, 0, 0, 0.1)";
     const tappedWrong = "rgba(255, 50, 50, 1)";
     this.color = (this.color === "#000") ? tappedBlack : tappedWrong;
+  }
+
+  changeColorToRed() {
+    this.color = "rgb(255, 50, 50)";
+  }
+
+  moveUp() {
+    this.coordY -= 150;
   }
 }
 

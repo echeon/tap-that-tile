@@ -89,14 +89,14 @@
 	  for (let i = 0; i < tiles.length; i++) {
 	    if (!tiles[i][lineNumber].tapped) {
 	      tiles[i].forEach(tile => tile.handleTap());
-	      tiles[i][lineNumber].handleColorChange();
+	      tiles[i][lineNumber].changeColor();
 	      if (!tiles[i][lineNumber].isBlack) {
 	        draw();
-	        drawDividers();
 	        update();
 	        window.clearInterval(updateId);
 	        window.clearInterval(addRowId);
 	        $('#canvas').off('click');
+	        $(window).off('keydown');
 	      }
 	      break;
 	    }
@@ -129,11 +129,37 @@
 	
 	
 	const updateId = window.setInterval(() => {
-	  // printLocation();
+	  if (isGameOver()) {
+	    window.clearInterval(updateId);
+	    window.clearInterval(addRowId);
+	    $('#canvas').off('click');
+	    $(window).off('keydown');
+	    handleGameOver();
+	  }
 	  draw();
-	  drawDividers();
 	  update();
 	}, 10);
+	
+	function handleGameOver() {
+	  changeMissedTileColor();
+	  moveEverythingUp();
+	}
+	
+	function changeMissedTileColor() {
+	  tiles[0].forEach(tile => {
+	    if (tile.isBlack) {
+	      tile.changeColorToRed();
+	    }
+	  })
+	}
+	
+	function moveEverythingUp() {
+	  tiles.forEach(row => {
+	    row.forEach(tile => {
+	      tile.moveUp();
+	    });
+	  });
+	}
 	
 	function printLocation() {
 	  console.log(tiles.map(row => {
@@ -143,16 +169,11 @@
 	
 	const addRowId = window.setInterval(() => {
 	  addRow();
-	}, (10)*(150/2));
-	
-	// addRow();
-	// printLocation();
-	// draw();
-	// drawDividers();
-	// update();
+	}, (10)*(150/10));
 	
 	function draw() {
 	  ctx.clearRect(0, 0, canvas.width, canvas.height);
+	  drawDividers();
 	  tiles.forEach(row => {
 	    row.forEach(tile => {
 	      tile.draw();
@@ -168,10 +189,20 @@
 	  });
 	}
 	
+	function isGameOver() {
+	  for (let i = 0; i < tiles.length; i++) {
+	    const nextUntappedTile = tiles[i][0];
+	    if (!nextUntappedTile.tapped && nextUntappedTile.coordY >= 600) {
+	      return true;
+	    }
+	  }
+	  return false;
+	}
+	
 	function addRow() {
 	  const newRow = generateRow()
 	  tiles.push(newRow);
-	  if (tiles.length >= 6) {
+	  if (tiles.length >= 7) {
 	    tiles.shift();
 	  }
 	}
@@ -217,17 +248,25 @@
 	  }
 	
 	  update() {
-	    this.coordY += 2;
+	    this.coordY += 10;
 	  }
 	
 	  handleTap() {
 	    this.tapped = !this.tapped;
 	  }
 	
-	  handleColorChange() {
+	  changeColor() {
 	    const tappedBlack = "rgba(0, 0, 0, 0.1)";
 	    const tappedWrong = "rgba(255, 50, 50, 1)";
 	    this.color = (this.color === "#000") ? tappedBlack : tappedWrong;
+	  }
+	
+	  changeColorToRed() {
+	    this.color = "rgb(255, 50, 50)";
+	  }
+	
+	  moveUp() {
+	    this.coordY -= 150;
 	  }
 	}
 	
