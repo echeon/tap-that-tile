@@ -1,25 +1,34 @@
 class Tile {
-  constructor(canvas, ctx) {
+  constructor(canvas, isBlack, lineNumber) {
     this.canvas = canvas;
-    this.ctx = ctx;
+    this.ctx = canvas.getContext('2d');
     this.tapped = false;
-    this.tappedColor = "#f00";
-    this.untappedColor = "#000";
-    this.coordX = 101 * Math.floor(Math.random() * 4);
+    this.isBlack = isBlack;
+    this.color = isBlack ? "#000" : "transparent";
+    this.coordX = 101 * lineNumber;
     this.coordY = -150;
   }
-
 
   draw() {
     const tileWidth = 100;
     const tileHeight = 150;
 
-    this.ctx.fillStyle = this.untappedColor;
+    this.ctx.fillStyle = this.color;
     this.ctx.fillRect(this.coordX, this.coordY, tileWidth, tileHeight);
   }
 
   update() {
     this.coordY += 2;
+  }
+
+  handleTap() {
+    this.tapped = !this.tapped;
+  }
+
+  handleColorChange() {
+    const tappedBlack = "rgba(0, 0, 0, 0.1)";
+    const tappedWrong = "rgba(255, 50, 50, 1)";
+    this.color = (this.color === "#000") ? tappedBlack : tappedWrong;
   }
 }
 

@@ -1,8 +1,9 @@
 body {
-  /*background: lightgreen;*/
+  background: #000;
 }
 
 #canvas {
+  border: 5px solid #fff;
   background-image: url("../img/background.jpg");
   display: block;
   position: absolute;
