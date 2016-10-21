@@ -13,3 +13,14 @@ body {
   left: 0;
   right: 0;
 }
+
+#score-board {
+  width: 100%;
+  padding-top: 20px;
+  font-size: 50px;
+  font-family: "Fjalla One", sans-serif;
+  color: #f00;
+  text-align: center;
+  text-shadow: 0 3px #555;
+  z-index: 10;
+}

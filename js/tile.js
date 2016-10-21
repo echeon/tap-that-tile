@@ -18,11 +18,11 @@ class Tile {
   }
 
   update() {
-    this.coordY += 10;
+    this.coordY += 5;
   }
 
   handleTap() {
-    this.tapped = !this.tapped;
+    this.tapped = true;
   }
 
   changeColor() {
@@ -35,10 +35,9 @@ class Tile {
     this.color = "rgb(255, 50, 50)";
   }
 
-  moveUp() {
-    this.coordY -= 150;
+  moveUp(offsetY) {
+    this.coordY -= offsetY;
   }
 }
-
 
 module.exports = Tile;
