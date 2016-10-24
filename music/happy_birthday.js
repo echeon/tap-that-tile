@@ -1,4 +1,8 @@
 const keyNumbers = [
+  0,
+  0,
+  0,
+  0,
   42,
   0,
   0,
@@ -97,7 +101,9 @@ const keyNumbers = [
   0,
 ];
 
-const notes = keyNumbers;
+const music = {
+  title: "Happy Birthday",
+  notes: keyNumbers
+};
 
-// export default notes;
-module.exports = notes;
+module.exports = music;

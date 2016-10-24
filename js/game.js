@@ -20,9 +20,6 @@ class Game {
     this.updateIntervalHelper = this.updateIntervalHelper.bind(this);
     this.addRow = this.addRow.bind(this);
 
-    this.game = [];
-    this.gameIndex = 0;
-
     this.generateGame();
   }
 
@@ -38,6 +35,8 @@ class Game {
   }
 
   generateGame() {
+    this.game = [];
+    this.gameIndex = 0;
     this.music.forEach(note => {
       if (note) {
         const prevNumber = this.game[this.game.length - 1];
@@ -66,10 +65,17 @@ class Game {
 
   reset() {
     this.currentScore = 0;
+    this.tiles = [];
+    this.prevIndex = null;
+    this.nextIndex = this.getRandomNumber();
     this.notesIndex = 0;
+    this.generateGame();
+    this.draw();
+    $('#score-board').hide();
   }
 
   initScoreBoard() {
+    $('#score-board').show();
     $('#score-board').css('transform', `translateY(${$('#canvas')[0].offsetTop}px)`);
     this.updateScoreBoard();
   }
@@ -115,11 +121,14 @@ class Game {
           this.draw();
           this.update();
 
-          window.clearInterval(this.interval1);
-          window.clearInterval(this.inverval2);
+          this.clearIntervals();
 
           this.decrementScore();
           this.removeEventListeners();
+
+          window.setTimeout(() => {
+            $('#game-end-screen').show();
+          }, 1000);
         }
 
         sound.play();
@@ -128,6 +137,11 @@ class Game {
         break;
       }
     }
+  }
+
+  clearIntervals() {
+    window.clearInterval(this.interval1);
+    window.clearInterval(this.inverval2);
   }
 
   addClickEventListener() {
@@ -150,13 +164,13 @@ class Game {
     $(window).on('keydown', e => {
       const key = e.key;
 
-      if (key === "d") {
+      if (key === "f") {
         this.handleTap(0);
-      } else if (key === "f") {
+      } else if (key === "g") {
         this.handleTap(1);
-      } else if (key === "j") {
+      } else if (key === "h") {
         this.handleTap(2);
-      } else if (key === "k") {
+      } else if (key === "j") {
         this.handleTap(3);
       }
     });
@@ -243,6 +257,14 @@ class Game {
   }
 
   handleGameOver() {
+    const sound = new Audio('./music/audio/gameover.wav');
+    sound.play();
+
+    window.setTimeout(() => {
+      $('#game-end-screen').show();
+    }, 1000);
+
+    this.clearIntervals();
     this.changeMissedTileColor();
     this.moveRemainingTilesToBaseline();
   }

@@ -1,6 +1,8 @@
-// null was 44;
-
 const keyNumbers = [
+  0,
+  0,
+  0,
+  0,
   40,
   44,
   47,
@@ -564,7 +566,9 @@ const keyNumbers = [
   52
 ];
 
-const notes = keyNumbers;
+const music = {
+  title: "Prelude in C",
+  notes: keyNumbers
+};
 
-// export default notes;
-module.exports = notes;
+module.exports = music;

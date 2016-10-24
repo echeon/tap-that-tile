@@ -3,13 +3,55 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One|Permanent+Marker" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.js"></script>
     <title></title>
   </head>
   <body>
     <canvas id="canvas" width="403" height="600"></canvas>
     <div id="score-board"></div>
+
+    <div id="main-screen">
+      <h1>Tap That Tile</h1>
+      <div class="instruction">
+        <div><img src="img/letter-f-icon.png" /></div>
+        <div><img src="img/letter-g-icon.png" /></div>
+        <div><img src="img/letter-h-icon.png" /></div>
+        <div><img src="img/letter-j-icon.png" /></div>
+      </div>
+      <div class="list">
+        <ul></ul>
+      </div>
+      <section class="credit">
+        <h3>by Euibin Cheon</h3>
+        <div>
+          <h3>
+            <a href="http://www.echeon.me/" target="_blank">
+              <i class="fa fa-folder" aria-hidden="true"></i>
+            </a>
+          </h3>
+          <h3>
+            <a href="http://www.linkedin.com/in/euibincheon" target="_blank">
+              <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+            </a>
+          </h3>
+          <h3>
+            <a href="http://www.github.com/echeon/tap-that-tile" target="_blank">
+              <i class="fa fa-github-square" aria-hidden="true"></i>
+            </a>
+          </h3>
+        </div>
+      </section>
+    </div>
+
+    <div id="game-end-screen">
+      <div>
+        <i class="replay fa fa-undo" aria-hidden="true"></i>
+        <i class="home fa fa-home" aria-hidden="true"></i>
+      </div>
+    </div>
+
     <script src="js/bundle.js"></script>
   </body>
 </html>

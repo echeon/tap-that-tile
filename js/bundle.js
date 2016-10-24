@@ -45,15 +45,55 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	const Game = __webpack_require__(1);
-	const Sounds = __webpack_require__(3);
-	const music = __webpack_require__(4);
-	const music2 = __webpack_require__(5);
+	const SOUNDS = __webpack_require__(3);
+	const music1 = __webpack_require__(7);
+	const music2 = __webpack_require__(6);
 	
 	const canvas = document.getElementById('canvas');
 	
+	const ctx = canvas.getContext('2d');
+	ctx.strokeStyle = '#fff';
+	ctx.lineWidth = 1;
+	ctx.beginPath();
+	ctx.moveTo(100.5, 0);
+	ctx.lineTo(100.5, 600);
+	ctx.stroke();
+	ctx.moveTo(201.5, 0);
+	ctx.lineTo(201.5, 600);
+	ctx.stroke();
+	ctx.moveTo(302.5, 0);
+	ctx.lineTo(302.5, 600);
+	ctx.stroke();
+	ctx.closePath();
 	
-	const g = new Game(canvas, music, Sounds);
-	g.play();
+	const musics = [music1, music2];
+	
+	musics.forEach(music => {
+	  const list = $(`<li><p>${music.title}</p><button>play</button></li>`);
+	  $('#main-screen > .list > ul').append(list);
+	});
+	
+	$('#main-screen > .list button').each((index, button) => {
+	  $(button).on('click', () => {
+	    const newGame = new Game(canvas, musics[index].notes, SOUNDS);
+	
+	    $('#game-end-screen i:first-child').on('click', () => {
+	      $('#game-end-screen').hide();
+	      newGame.reset();
+	      newGame.play();
+	    });
+	
+	    $('#game-end-screen i:last-child').on('click', () => {
+	      $('#game-end-screen').hide();
+	      newGame.reset();
+	      $('#main-screen').show();
+	    });
+	
+	    $("#main-screen").hide();
+	    newGame.reset();
+	    newGame.play();
+	  });
+	});
 
 
 /***/ },
@@ -82,9 +122,6 @@
 	    this.updateIntervalHelper = this.updateIntervalHelper.bind(this);
 	    this.addRow = this.addRow.bind(this);
 	
-	    this.game = [];
-	    this.gameIndex = 0;
-	
 	    this.generateGame();
 	  }
 	
@@ -100,6 +137,8 @@
 	  }
 	
 	  generateGame() {
+	    this.game = [];
+	    this.gameIndex = 0;
 	    this.music.forEach(note => {
 	      if (note) {
 	        const prevNumber = this.game[this.game.length - 1];
@@ -128,10 +167,17 @@
 	
 	  reset() {
 	    this.currentScore = 0;
+	    this.tiles = [];
+	    this.prevIndex = null;
+	    this.nextIndex = this.getRandomNumber();
 	    this.notesIndex = 0;
+	    this.generateGame();
+	    this.draw();
+	    $('#score-board').hide();
 	  }
 	
 	  initScoreBoard() {
+	    $('#score-board').show();
 	    $('#score-board').css('transform', `translateY(${$('#canvas')[0].offsetTop}px)`);
 	    this.updateScoreBoard();
 	  }
@@ -177,11 +223,14 @@
 	          this.draw();
 	          this.update();
 	
-	          window.clearInterval(this.interval1);
-	          window.clearInterval(this.inverval2);
+	          this.clearIntervals();
 	
 	          this.decrementScore();
 	          this.removeEventListeners();
+	
+	          window.setTimeout(() => {
+	            $('#game-end-screen').show();
+	          }, 1000);
 	        }
 	
 	        sound.play();
@@ -190,6 +239,11 @@
 	        break;
 	      }
 	    }
+	  }
+	
+	  clearIntervals() {
+	    window.clearInterval(this.interval1);
+	    window.clearInterval(this.inverval2);
 	  }
 	
 	  addClickEventListener() {
@@ -305,6 +359,14 @@
 	  }
 	
 	  handleGameOver() {
+	    const sound = new Audio('./music/audio/gameover.wav');
+	    sound.play();
+	
+	    window.setTimeout(() => {
+	      $('#game-end-screen').show();
+	    }, 1000);
+	
+	    this.clearIntervals();
 	    this.changeMissedTileColor();
 	    this.moveRemainingTilesToBaseline();
 	  }
@@ -397,12 +459,16 @@
 
 
 /***/ },
-/* 4 */
+/* 4 */,
+/* 5 */,
+/* 6 */
 /***/ function(module, exports) {
 
-	// null was 44;
-	
 	const keyNumbers = [
+	  0,
+	  0,
+	  0,
+	  0,
 	  40,
 	  44,
 	  47,
@@ -966,17 +1032,23 @@
 	  52
 	];
 	
-	const notes = keyNumbers;
+	const music = {
+	  title: "Prelude in C",
+	  notes: keyNumbers
+	};
 	
-	// export default notes;
-	module.exports = notes;
+	module.exports = music;
 
 
 /***/ },
-/* 5 */
+/* 7 */
 /***/ function(module, exports) {
 
 	const keyNumbers = [
+	  0,
+	  0,
+	  0,
+	  0,
 	  42,
 	  0,
 	  0,
@@ -1075,10 +1147,12 @@
 	  0,
 	];
 	
-	const notes = keyNumbers;
+	const music = {
+	  title: "Happy Birthday",
+	  notes: keyNumbers
+	};
 	
-	// export default notes;
-	module.exports = notes;
+	module.exports = music;
 
 
 /***/ }
