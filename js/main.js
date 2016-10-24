@@ -20,7 +20,10 @@ ctx.lineTo(302.5, 600);
 ctx.stroke();
 ctx.closePath();
 
-const musics = [music1, music2];
+const musics = [
+  music1,
+  music2
+];
 
 musics.forEach(music => {
   const list = $(`<li><p>${music.title}</p><button>play</button></li>`);

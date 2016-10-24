@@ -46,8 +46,8 @@
 
 	const Game = __webpack_require__(1);
 	const SOUNDS = __webpack_require__(3);
-	const music1 = __webpack_require__(7);
-	const music2 = __webpack_require__(6);
+	const music1 = __webpack_require__(4);
+	const music2 = __webpack_require__(5);
 	
 	const canvas = document.getElementById('canvas');
 	
@@ -66,7 +66,10 @@
 	ctx.stroke();
 	ctx.closePath();
 	
-	const musics = [music1, music2];
+	const musics = [
+	  music1,
+	  music2
+	];
 	
 	musics.forEach(music => {
 	  const list = $(`<li><p>${music.title}</p><button>play</button></li>`);
@@ -132,8 +135,30 @@
 	    this.addClickEventListener();
 	    this.addKeydownEventListener();
 	
-	    this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
-	    this.inverval2 = window.setInterval(this.addRow, this.intervalTime*30);
+	    this.startCountdown();
+	
+	    window.setTimeout(() => {
+	      this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
+	      this.inverval2 = window.setInterval(this.addRow, this.intervalTime*30);
+	    }, 3000);
+	  }
+	
+	  startCountdown() {
+	    $('#count-3').show();
+	
+	    window.setTimeout(() => {
+	      $('#count-3').hide();
+	      $('#count-2').show();
+	    }, 1000);
+	
+	    window.setTimeout(() => {
+	      $('#count-2').hide();
+	      $('#count-1').show();
+	    }, 2000);
+	
+	    window.setTimeout(() => {
+	      $('#count-1').hide();
+	    }, 3000);
 	  }
 	
 	  generateGame() {
@@ -154,12 +179,12 @@
 	  }
 	
 	  updateIntervalHelper() {
-	    if (this.isGameOver()) {
+	    if (this.didMissTile()) {
 	      window.clearInterval(this.interval1);
 	      window.clearInterval(this.inverval2);
 	
 	      this.removeEventListeners();
-	      this.handleGameOver();
+	      this.handleMissingTile();
 	    }
 	    this.draw();
 	    this.update();
@@ -341,6 +366,9 @@
 	  }
 	
 	  addRow() {
+	    if (this.gameIndex > this.game.length) {
+	      this.generateGame();
+	    }
 	    const newRow = this.generateRow();
 	    this.tiles.push(newRow);
 	    if (this.tiles.length >= 7) {
@@ -348,7 +376,7 @@
 	    }
 	  }
 	
-	  isGameOver() {
+	  didMissTile() {
 	    for (let i = 0; i < this.tiles.length; i++) {
 	      const nextUntappedTile = this.tiles[i][0];
 	      if (!nextUntappedTile.tapped && nextUntappedTile.coordY >= this.canvas.height) {
@@ -358,7 +386,7 @@
 	    return false;
 	  }
 	
-	  handleGameOver() {
+	  handleMissingTile() {
 	    const sound = new Audio('./music/audio/gameover.wav');
 	    sound.play();
 	
@@ -459,15 +487,122 @@
 
 
 /***/ },
-/* 4 */,
-/* 5 */,
-/* 6 */
+/* 4 */
 /***/ function(module, exports) {
 
 	const keyNumbers = [
 	  0,
+	  42,
 	  0,
 	  0,
+	  42,
+	  44,
+	  0,
+	  0,
+	  0,
+	  42,
+	  0,
+	  0,
+	  0,
+	  47,
+	  0,
+	  0,
+	  0,
+	  46,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	  42,
+	  0,
+	  0,
+	  42,
+	  44,
+	  0,
+	  0,
+	  0,
+	  42,
+	  0,
+	  0,
+	  0,
+	  49,
+	  0,
+	  0,
+	  0,
+	  47,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	  42,
+	  0,
+	  0,
+	  42,
+	  54,
+	  0,
+	  0,
+	  0,
+	  51,
+	  0,
+	  0,
+	  0,
+	  47,
+	  0,
+	  0,
+	  0,
+	  46,
+	  0,
+	  0,
+	  0,
+	  44,
+	  0,
+	  0,
+	  0,
+	  52,
+	  0,
+	  0,
+	  52,
+	  51,
+	  0,
+	  0,
+	  0,
+	  47,
+	  0,
+	  0,
+	  0,
+	  49,
+	  0,
+	  0,
+	  0,
+	  47,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	  0,
+	];
+	
+	const music = {
+	  title: "Happy Birthday",
+	  notes: keyNumbers
+	};
+	
+	module.exports = music;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	const keyNumbers = [
 	  0,
 	  40,
 	  44,
@@ -1034,121 +1169,6 @@
 	
 	const music = {
 	  title: "Prelude in C",
-	  notes: keyNumbers
-	};
-	
-	module.exports = music;
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	const keyNumbers = [
-	  0,
-	  0,
-	  0,
-	  0,
-	  42,
-	  0,
-	  0,
-	  42,
-	  44,
-	  0,
-	  0,
-	  0,
-	  42,
-	  0,
-	  0,
-	  0,
-	  47,
-	  0,
-	  0,
-	  0,
-	  46,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	  42,
-	  0,
-	  0,
-	  42,
-	  44,
-	  0,
-	  0,
-	  0,
-	  42,
-	  0,
-	  0,
-	  0,
-	  49,
-	  0,
-	  0,
-	  0,
-	  47,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	  42,
-	  0,
-	  0,
-	  42,
-	  54,
-	  0,
-	  0,
-	  0,
-	  51,
-	  0,
-	  0,
-	  0,
-	  47,
-	  0,
-	  0,
-	  0,
-	  46,
-	  0,
-	  0,
-	  0,
-	  44,
-	  0,
-	  0,
-	  0,
-	  52,
-	  0,
-	  0,
-	  52,
-	  51,
-	  0,
-	  0,
-	  0,
-	  47,
-	  0,
-	  0,
-	  0,
-	  49,
-	  0,
-	  0,
-	  0,
-	  47,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	  0,
-	];
-	
-	const music = {
-	  title: "Happy Birthday",
 	  notes: keyNumbers
 	};
 	

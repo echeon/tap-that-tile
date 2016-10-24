@@ -30,8 +30,30 @@ class Game {
     this.addClickEventListener();
     this.addKeydownEventListener();
 
-    this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
-    this.inverval2 = window.setInterval(this.addRow, this.intervalTime*30);
+    this.startCountdown();
+
+    window.setTimeout(() => {
+      this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
+      this.inverval2 = window.setInterval(this.addRow, this.intervalTime*30);
+    }, 3000);
+  }
+
+  startCountdown() {
+    $('#count-3').show();
+
+    window.setTimeout(() => {
+      $('#count-3').hide();
+      $('#count-2').show();
+    }, 1000);
+
+    window.setTimeout(() => {
+      $('#count-2').hide();
+      $('#count-1').show();
+    }, 2000);
+
+    window.setTimeout(() => {
+      $('#count-1').hide();
+    }, 3000);
   }
 
   generateGame() {
@@ -52,12 +74,12 @@ class Game {
   }
 
   updateIntervalHelper() {
-    if (this.isGameOver()) {
+    if (this.didMissTile()) {
       window.clearInterval(this.interval1);
       window.clearInterval(this.inverval2);
 
       this.removeEventListeners();
-      this.handleGameOver();
+      this.handleMissingTile();
     }
     this.draw();
     this.update();
@@ -239,6 +261,9 @@ class Game {
   }
 
   addRow() {
+    if (this.gameIndex > this.game.length) {
+      this.generateGame();
+    }
     const newRow = this.generateRow();
     this.tiles.push(newRow);
     if (this.tiles.length >= 7) {
@@ -246,7 +271,7 @@ class Game {
     }
   }
 
-  isGameOver() {
+  didMissTile() {
     for (let i = 0; i < this.tiles.length; i++) {
       const nextUntappedTile = this.tiles[i][0];
       if (!nextUntappedTile.tapped && nextUntappedTile.coordY >= this.canvas.height) {
@@ -256,7 +281,7 @@ class Game {
     return false;
   }
 
-  handleGameOver() {
+  handleMissingTile() {
     const sound = new Audio('./music/audio/gameover.wav');
     sound.play();
 

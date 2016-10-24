@@ -200,3 +200,18 @@ body {
 #game-end-screen > div i:first-child {
   margin-right: 50px;
 }
+
+div.countdown {
+  display: none;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 100px;
+  font-family: "Permanent Marker";
+  color: #f00;
+  text-align: center;
+  height: 100px;
+}
