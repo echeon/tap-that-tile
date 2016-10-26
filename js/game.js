@@ -127,7 +127,21 @@ class Game {
 
       if (!tappedTile.tapped) {
         const currentNote = this.notes[this.notesIndex];
-        let sound = this.sounds[currentNote].cloneNode();
+
+        let soundGroup;
+        if (Array.isArray(currentNote)) {
+          if (currentNote.length === 1) {
+            soundGroup = [this.sounds[currentNote].cloneNode()];
+          } else if (currentNote.length > 1) {
+            soundGroup = currentNote.map(note => {
+              console.log(note);
+              return this.sounds[note].cloneNode();
+            });
+          }
+        } else {
+          soundGroup = [this.sounds[currentNote].cloneNode()];
+        }
+
 
         row.forEach(tile => tile.handleTap());
         tappedTile.changeColor();
@@ -135,7 +149,7 @@ class Game {
 
         // if you tap non-black tile
         if (!tappedTile.isBlack) {
-          sound = new Audio('./music/audio/gameover.wav');
+          soundGroup = [new Audio('./music/audio/gameover.wav')];
           if (tappedTile.coordY > 450) {
             this.moveRemainingTilesToBaseline();
           }
@@ -153,7 +167,7 @@ class Game {
           }, 1000);
         }
 
-        sound.play();
+        soundGroup.forEach(sound => sound.play());
         this.notesIndex = (this.notesIndex + 1) % this.notes.length;
 
         break;

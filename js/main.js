@@ -1,7 +1,8 @@
 const Game = require('./game.js');
 const SOUNDS = require('../music/audio/sounds.js');
-const music1 = require('../music/happy_birthday.js');
-const music2 = require('../music/prelude_in_c.js');
+const music1 = require('../music/songs/happy_birthday.js');
+const music2 = require('../music/songs/prelude_in_c.js');
+const music3 = require('../music/songs/little_star.js');
 
 const canvas = document.getElementById('canvas');
 
@@ -22,7 +23,8 @@ ctx.closePath();
 
 const musics = [
   music1,
-  music2
+  music2,
+  music3
 ];
 
 musics.forEach(music => {

@@ -48,6 +48,7 @@
 	const SOUNDS = __webpack_require__(3);
 	const music1 = __webpack_require__(4);
 	const music2 = __webpack_require__(5);
+	const music3 = __webpack_require__(6);
 	
 	const canvas = document.getElementById('canvas');
 	
@@ -68,7 +69,8 @@
 	
 	const musics = [
 	  music1,
-	  music2
+	  music2,
+	  music3
 	];
 	
 	musics.forEach(music => {
@@ -232,7 +234,21 @@
 	
 	      if (!tappedTile.tapped) {
 	        const currentNote = this.notes[this.notesIndex];
-	        let sound = this.sounds[currentNote].cloneNode();
+	
+	        let soundGroup;
+	        if (Array.isArray(currentNote)) {
+	          if (currentNote.length === 1) {
+	            soundGroup = [this.sounds[currentNote].cloneNode()];
+	          } else if (currentNote.length > 1) {
+	            soundGroup = currentNote.map(note => {
+	              console.log(note);
+	              return this.sounds[note].cloneNode();
+	            });
+	          }
+	        } else {
+	          soundGroup = [this.sounds[currentNote].cloneNode()];
+	        }
+	
 	
 	        row.forEach(tile => tile.handleTap());
 	        tappedTile.changeColor();
@@ -240,7 +256,7 @@
 	
 	        // if you tap non-black tile
 	        if (!tappedTile.isBlack) {
-	          sound = new Audio('./music/audio/gameover.wav');
+	          soundGroup = [new Audio('./music/audio/gameover.wav')];
 	          if (tappedTile.coordY > 450) {
 	            this.moveRemainingTilesToBaseline();
 	          }
@@ -258,7 +274,7 @@
 	          }, 1000);
 	        }
 	
-	        sound.play();
+	        soundGroup.forEach(sound => sound.play());
 	        this.notesIndex = (this.notesIndex + 1) % this.notes.length;
 	
 	        break;
@@ -477,10 +493,8 @@
 
 	const Sounds = {};
 	
-	for (let i = 0; i <= 64; i++) {
-	  Sounds[i] = new Audio(`./music/audio/wav/${i}.wav`);
-	  // sounds[i] = new Audio(`./music/audio/mp3/${i}.mp3`);
-	  // console.log(sounds[i]);
+	for (let i = 0; i <= 88; i++) {
+	  Sounds[i] = new Audio(`./music/audio/mp3/${i}.mp3`);
 	};
 	
 	module.exports = Sounds;
@@ -1169,6 +1183,22 @@
 	
 	const music = {
 	  title: "Prelude in C",
+	  notes: keyNumbers
+	};
+	
+	module.exports = music;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	const keyNumbers = [
+	  [52, 28], [35], [52, 44], [40], [59, 32], [35], [59, 44, 47], [52], [61, 33], [37], [61, 45, 49], [52], [59, 32], [35], [44, 47], 0, [57, 42], [54], [57, 54], [47], [56, 52], [47], [56, 52, 49], [44], [54, 45], [42], [54, 47], [51, 45], [52, 44], [47], [52], [54], [59, 40], [47], [59, 52], [44], [57, 40], [49], [57, 51], [52], [56, 40], [47], [56, 52], [49], [54, 51, 54], [51], [54, 49], [47], [59, 40], [52], [59, 54], [56], [57, 52], [49], [57, 52], [45], [56, 52], [42], [56, 52], [49], [54, 47], [35], [35, 30], [39, 27], [52, 28], [35], [52, 44], [40], [59, 32], [35], [59, 44, 47], [52], [61, 33], [37], [61, 45, 49], [52], [59, 32], [35], [44, 47], 0, [57, 30], [37], [57, 54, 45], [37], [56, 52, 34], [42], [56, 52, 49], [42], [54, 42, 35], [39], [54, 42, 39], [51], [52, 40, 44], 0, 0, 0, [64, 52], [59], [64, 56], [68, 59], [71, 52], [68, 59], [71, 56], [59], [73, 52], [69, 61], [73, 57], [76, 61], [71, 52], [68, 59], [64, 56], [68, 59], [69, 52], [59], [69, 54], [71, 59], [68, 52], [59], [68, 56], [69, 59], [66, 51], [59], [66, 54], [68, 59], [64, 52], [64], [59, 56], [59, 54], [71, 52], [59], [71, 56], [68, 59], [69, 52], [57], [69, 54], [66, 57], [68, 52], [59], [68, 56], [64, 59], [66, 47], [59, 51], [64, 54], [66, 59], [71, 52], [59], [71, 56], [68, 59], [69, 52], [54], [69, 57], [66, 54], [68, 52], [59], [68, 56], [64, 59], [66, 51], [47], [59, 54], [63, 51], [64, 28], [35], [64, 44], [68, 35], [71, 32], [68, 35], [71, 44, 47], [35], [73, 33], [69, 37], [73, 42, 45], [76, 37], [71, 32], [68, 35], [64, 44, 47], [68, 35], [69, 30], [37], [69, 42, 45], [71, 37], [68, 34], [42], [68, 46, 49], [69, 42], [66, 35], [39], [66, 42, 45, 47], [68], [64, 40, 44], 0, 0, 0
+	]
+	
+	const music = {
+	  title: "Little Star",
 	  notes: keyNumbers
 	};
 	
