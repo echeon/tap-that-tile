@@ -42,14 +42,8 @@ $('#main-screen > .list button').each((index, button) => {
       SOUNDS,
       musics[index].intervalTime
     );
-
-    $('#game-end-screen i:first-child').on('click', () => {
-      $('#game-end-screen').hide();
-      newGame.reset();
-      newGame.play();
-    });
-
-    $('#game-end-screen i:last-child').on('click', () => {
+    
+    $('#game-end-screen i').on('click', () => {
       $('#game-end-screen').hide();
       newGame.reset();
       $('#main-screen').show();

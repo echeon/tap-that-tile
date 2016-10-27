@@ -1,5 +1,7 @@
 const Tile = require('./tile.js');
 
+const MINIMUM_INTERVAL = 5;
+
 class Game {
   constructor(canvas, music, sounds, intervalTime) {
     this.canvas = canvas;
@@ -15,6 +17,7 @@ class Game {
     this.sounds = sounds;
     this.initIntervalTime = intervalTime;
     this.intervalTime = intervalTime;
+    this.whenToSpeedUp = Math.min(100, this.notes.length);
     this.interval1 = null;
     this.interval2 = null;
 
@@ -41,8 +44,8 @@ class Game {
 
   increaseSpeed() {
     this.clearIntervals();
-    if (this.intervalTime > 5) {
-      this.intervalTime -= 1;
+    if (this.intervalTime > MINIMUM_INTERVAL) {
+      this.intervalTime -= 2;
     }
     this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
     this.inverval2 = window.setInterval(this.addRow, this.intervalTime*30);
@@ -170,15 +173,7 @@ class Game {
           this.decrementScore();
           this.removeEventListeners();
 
-          window.setTimeout(() => {
-            $('#game-end-screen').show();
-            // $(window).on('keydown', e => {
-            //   $(window).off('keydown');
-            //   $('#game-end-screen').hide();
-            //   this.reset();
-            //   this.play();
-            // });
-          }, 1000);
+          this.showOptionsAfterGameOver();
         }
 
         soundGroup.forEach(sound => sound.play());
@@ -187,6 +182,20 @@ class Game {
         break;
       }
     }
+  }
+
+  showOptionsAfterGameOver() {
+    window.setTimeout(() => {
+      $('#game-end-screen').show();
+      $(window).on('keydown', e => {
+        if (e.keyCode === 0 || e.keyCode === 32) {
+          $(window).off('keydown');
+          $('#game-end-screen').hide();
+          this.reset();
+          this.play();
+        }
+      });
+    }, 1000);
   }
 
   clearIntervals() {
@@ -297,8 +306,13 @@ class Game {
     if (this.tiles.length >= 7) {
       this.tiles.shift();
     }
-    if (this.currentScore > 0 && this.currentScore % 10 === 0) {
+    if (this.currentScore && this.currentScore % this.whenToSpeedUp === 0) {
       this.increaseSpeed();
+      $('#warning').show();
+      $('#warning').fadeTo(3000, 0, () => {
+        $('#warning').hide();
+        $('#warning').css('opacity', 1);
+      });
     }
   }
 
@@ -316,15 +330,7 @@ class Game {
     const sound = new Audio('./music/audio/gameover.wav');
     sound.play();
 
-    window.setTimeout(() => {
-      $('#game-end-screen').show();
-      // $(window).on('keydown', e => {
-      //   $(window).off('keydown');
-      //   $('#game-end-screen').hide();
-      //   this.reset();
-      //   this.play();
-      // });
-    }, 1000);
+    this.showOptionsAfterGameOver();
 
     this.clearIntervals();
     this.changeMissedTileColor();

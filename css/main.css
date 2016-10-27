@@ -194,17 +194,27 @@ body {
 
 #game-end-screen > div {
   width: 100%;
-  height: 100px;
-  margin: 250px 0;
+  height: 150px;
+  margin: 225px 0;
   background: #fff;
   text-align: center;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+#game-end-screen > div p {
+  cursor: default;
+  display: block;
+  color: #000;
+  font-size: 30px;
+  margin: 0 0 13px 0;
 }
 
 #game-end-screen > div i {
   color: #42b6f4;
   font-size: 60px;
-  padding: 20px 0;
   cursor: pointer;
+  margin: 0;
 }
 
 #game-end-screen > div i:hover {
@@ -228,4 +238,19 @@ div.countdown {
   color: #f00;
   text-align: center;
   height: 100px;
+}
+
+#warning {
+  display: none;
+  height: 100px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: rgb(149, 14, 222);
+  z-index: 99;
+  text-align: center;
+  font-size: 25px;
 }
