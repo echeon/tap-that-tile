@@ -5,7 +5,7 @@ const keyNumbers = [
 const music = {
   title: "Little Star",
   notes: keyNumbers,
-  intervalTime: 12
+  intervalTime: 13
 };
 
 module.exports = music;

@@ -5,7 +5,7 @@ const keyNumbers = [
 const music = {
   title: "Prelude in C",
   notes: keyNumbers,
-  intervalTime: 10
+  intervalTime: 11
 };
 
 module.exports = music;
