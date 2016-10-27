@@ -147,7 +147,7 @@ body {
 }
 
 .list li:hover {
-  box-shadow: 1px 3px 5px rgb(170, 170, 170);
+  box-shadow: 1px 3px 5px rgb(130, 130, 130);
 }
 
 .list li:last-child {
@@ -201,7 +201,7 @@ body {
 }
 
 #game-end-screen > div i {
-  color: #000;
+  color: #42b6f4;
   font-size: 60px;
   padding: 20px 0;
   cursor: pointer;

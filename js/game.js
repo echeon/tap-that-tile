@@ -1,7 +1,7 @@
 const Tile = require('./tile.js');
 
 class Game {
-  constructor(canvas, music, sounds) {
+  constructor(canvas, music, sounds, intervalTime) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.highestScore = 0;
@@ -13,7 +13,8 @@ class Game {
     this.notes = music.filter(note => note ? true : false);
     this.notesIndex = 0;
     this.sounds = sounds;
-    this.intervalTime = 6;
+    this.initIntervalTime = intervalTime;
+    this.intervalTime = intervalTime;
     this.interval1 = null;
     this.interval2 = null;
 
@@ -23,9 +24,9 @@ class Game {
     this.generateGame();
   }
 
-
   play() {
     this.initScoreBoard();
+    this.generateGame();
 
     this.addClickEventListener();
     this.addKeydownEventListener();
@@ -36,6 +37,15 @@ class Game {
       this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
       this.inverval2 = window.setInterval(this.addRow, this.intervalTime*30);
     }, 3000);
+  }
+
+  increaseSpeed() {
+    this.clearIntervals();
+    if (this.intervalTime > 5) {
+      this.intervalTime -= 1;
+    }
+    this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
+    this.inverval2 = window.setInterval(this.addRow, this.intervalTime*30);
   }
 
   startCountdown() {
@@ -91,7 +101,7 @@ class Game {
     this.prevIndex = null;
     this.nextIndex = this.getRandomNumber();
     this.notesIndex = 0;
-    this.generateGame();
+    this.intervalTime = this.initIntervalTime;
     this.draw();
     $('#score-board').hide();
   }
@@ -134,14 +144,12 @@ class Game {
             soundGroup = [this.sounds[currentNote].cloneNode()];
           } else if (currentNote.length > 1) {
             soundGroup = currentNote.map(note => {
-              console.log(note);
               return this.sounds[note].cloneNode();
             });
           }
         } else {
           soundGroup = [this.sounds[currentNote].cloneNode()];
         }
-
 
         row.forEach(tile => tile.handleTap());
         tappedTile.changeColor();
@@ -164,6 +172,12 @@ class Game {
 
           window.setTimeout(() => {
             $('#game-end-screen').show();
+            // $(window).on('keydown', e => {
+            //   $(window).off('keydown');
+            //   $('#game-end-screen').hide();
+            //   this.reset();
+            //   this.play();
+            // });
           }, 1000);
         }
 
@@ -283,6 +297,9 @@ class Game {
     if (this.tiles.length >= 7) {
       this.tiles.shift();
     }
+    if (this.currentScore > 0 && this.currentScore % 10 === 0) {
+      this.increaseSpeed();
+    }
   }
 
   didMissTile() {
@@ -301,6 +318,12 @@ class Game {
 
     window.setTimeout(() => {
       $('#game-end-screen').show();
+      // $(window).on('keydown', e => {
+      //   $(window).off('keydown');
+      //   $('#game-end-screen').hide();
+      //   this.reset();
+      //   this.play();
+      // });
     }, 1000);
 
     this.clearIntervals();
