@@ -1,10 +1,6 @@
-const Game = require('./game.js');
-const SOUNDS = require('../music/audio/sounds.js');
-
-// musics
-const happyBirthday = require('../music/songs/happy_birthday.js');
-const LittleStar = require('../music/songs/little_star.js');
-const PreludeInC = require('../music/songs/prelude_in_c.js');
+import Game from './game';
+import SOUNDS from '../music/audio/sounds';
+import musics from '../music/music_library';
 
 const canvas = document.getElementById('canvas');
 
@@ -23,12 +19,6 @@ ctx.lineTo(302.5, 600);
 ctx.stroke();
 ctx.closePath();
 
-const musics = [
-  happyBirthday,
-  LittleStar,
-  PreludeInC
-];
-
 musics.forEach(music => {
   const list = $(`<li><p>${music.title}</p><button>play</button></li>`);
   $('#main-screen > .list > ul').append(list);
@@ -42,7 +32,7 @@ $('#main-screen > .list button').each((index, button) => {
       SOUNDS,
       musics[index].intervalTime
     );
-    
+
     $('#game-end-screen i').on('click', () => {
       $('#game-end-screen').hide();
       newGame.reset();

@@ -8,4 +8,4 @@ const music = {
   intervalTime: 7
 };
 
-module.exports = music;
+export default music;

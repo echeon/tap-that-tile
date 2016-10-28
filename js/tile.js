@@ -1,4 +1,4 @@
-class Tile {
+export default class Tile {
   constructor(canvas, isBlack, lineNumber) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
@@ -39,5 +39,3 @@ class Tile {
     this.coordY -= offsetY;
   }
 }
-
-module.exports = Tile;

@@ -1,8 +1,8 @@
-const Tile = require('./tile.js');
+import Tile from './tile';
 
 const MINIMUM_INTERVAL = 5;
 
-class Game {
+export default class Game {
   constructor(canvas, music, sounds, intervalTime) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
@@ -354,5 +354,3 @@ class Game {
     })
   }
 }
-
-module.exports = Game;
