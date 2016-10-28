@@ -329,15 +329,13 @@
 	
 	  addKeydownEventListener() {
 	    $(window).on('keydown', e => {
-	      const key = e.key;
-	
-	      if (key === "f") {
+	      if (e.keyCode === 70) {
 	        this.handleTap(0);
-	      } else if (key === "g") {
+	      } else if (e.keyCode === 71) {
 	        this.handleTap(1);
-	      } else if (key === "h") {
+	      } else if (e.keyCode === 72) {
 	        this.handleTap(2);
-	      } else if (key === "j") {
+	      } else if (e.keyCode === 74) {
 	        this.handleTap(3);
 	      }
 	    });
