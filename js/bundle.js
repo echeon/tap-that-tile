@@ -54,7 +54,7 @@
 	
 	var _sounds2 = _interopRequireDefault(_sounds);
 	
-	var _music_library = __webpack_require__(7);
+	var _music_library = __webpack_require__(4);
 	
 	var _music_library2 = _interopRequireDefault(_music_library);
 	
@@ -77,14 +77,22 @@
 	ctx.stroke();
 	ctx.closePath();
 	
+	var highScores = {};
+	
 	_music_library2.default.forEach(function (music) {
 	  var list = $('<li><p>' + music.title + '</p><button>play</button></li>');
 	  $('#main-screen > .list > ul').append(list);
+	
+	  highScores[music.title] = 0;
 	});
+	
+	if (localStorage.getItem("tttHighScores") === null) {
+	  localStorage.setItem("tttHighScores", JSON.stringify(highScores));
+	}
 	
 	$('#main-screen > .list button').each(function (index, button) {
 	  $(button).on('click', function () {
-	    var newGame = new _game2.default(canvas, _music_library2.default[index].notes, _sounds2.default, _music_library2.default[index].intervalTime);
+	    var newGame = new _game2.default(canvas, _music_library2.default[index], _sounds2.default);
 	
 	    $('#game-end-screen i').on('click', function () {
 	      $('#game-end-screen').hide();
@@ -116,12 +124,15 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var MINIMUM_INTERVAL = 5;
+	var localStorage = window.localStorage;
 	
 	var Game = function () {
-	  function Game(canvas, music, sounds, intervalTime) {
+	  function Game(canvas, music, sounds) {
 	    _classCallCheck(this, Game);
 	
 	    this.canvas = canvas;
@@ -131,17 +142,18 @@
 	    this.tiles = [];
 	    this.prevIndex = null;
 	    this.nextIndex = this.getRandomNumber();
-	    this.music = music;
-	    this.notes = music.filter(function (note) {
+	    this.music = music.notes;
+	    this.notes = music.notes.filter(function (note) {
 	      return note ? true : false;
 	    });
 	    this.notesIndex = 0;
 	    this.sounds = sounds;
-	    this.initIntervalTime = intervalTime;
-	    this.intervalTime = intervalTime;
+	    this.initIntervalTime = music.intervalTime;
+	    this.intervalTime = music.intervalTime;
 	    this.whenToSpeedUp = Math.min(100, this.notes.length);
 	    this.interval1 = null;
 	    this.interval2 = null;
+	    this.title = music.title;
 	
 	    this.updateIntervalHelper = this.updateIntervalHelper.bind(this);
 	    this.addRow = this.addRow.bind(this);
@@ -319,6 +331,8 @@
 	            this.removeEventListeners();
 	
 	            this.showOptionsAfterGameOver();
+	
+	            this.saveScore();
 	          }
 	
 	          soundGroup.forEach(function (sound) {
@@ -328,6 +342,19 @@
 	
 	          break;
 	        }
+	      }
+	    }
+	  }, {
+	    key: 'saveScore',
+	    value: function saveScore() {
+	      var savedScores = JSON.parse(localStorage.getItem("tttHighScores"));
+	      var currHighScore = savedScores[this.title];
+	      if (this.currentScore > currHighScore) {
+	        var newHighScore = _defineProperty({}, this.title, this.currentScore);
+	        console.log(newHighScore);
+	        var newScores = Object.assign({}, savedScores, newHighScore);
+	        localStorage.setItem("tttHighScores", JSON.stringify(newScores));
+	        console.log(localStorage.getItem("tttHighScores"));
 	      }
 	    }
 	  }, {
@@ -496,11 +523,13 @@
 	      var sound = new Audio('./music/audio/gameover.wav');
 	      sound.play();
 	
-	      this.showOptionsAfterGameOver();
-	
 	      this.clearIntervals();
 	      this.changeMissedTileColor();
 	      this.moveRemainingTilesToBaseline();
+	
+	      this.showOptionsAfterGameOver();
+	
+	      this.saveScore();
 	    }
 	  }, {
 	    key: 'changeMissedTileColor',
@@ -619,6 +648,34 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _happy_birthday = __webpack_require__(5);
+	
+	var _happy_birthday2 = _interopRequireDefault(_happy_birthday);
+	
+	var _little_star = __webpack_require__(6);
+	
+	var _little_star2 = _interopRequireDefault(_little_star);
+	
+	var _prelude_in_c = __webpack_require__(7);
+	
+	var _prelude_in_c2 = _interopRequireDefault(_prelude_in_c);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var musicLibrary = [_happy_birthday2.default, _little_star2.default, _prelude_in_c2.default];
+	
+	exports.default = musicLibrary;
+
+/***/ },
+/* 5 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -637,7 +694,7 @@
 	exports.default = music;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -656,7 +713,7 @@
 	exports.default = music;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -673,34 +730,6 @@
 	};
 	
 	exports.default = music;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _happy_birthday = __webpack_require__(4);
-	
-	var _happy_birthday2 = _interopRequireDefault(_happy_birthday);
-	
-	var _little_star = __webpack_require__(5);
-	
-	var _little_star2 = _interopRequireDefault(_little_star);
-	
-	var _prelude_in_c = __webpack_require__(6);
-	
-	var _prelude_in_c2 = _interopRequireDefault(_prelude_in_c);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var musicLibrary = [_happy_birthday2.default, _little_star2.default, _prelude_in_c2.default];
-	
-	exports.default = musicLibrary;
 
 /***/ }
 /******/ ]);

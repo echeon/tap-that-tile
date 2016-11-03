@@ -4,6 +4,8 @@ import musics from '../music/music_library';
 
 const canvas = document.getElementById('canvas');
 
+
+
 const ctx = canvas.getContext('2d');
 ctx.strokeStyle = '#fff';
 ctx.lineWidth = 1;
@@ -19,18 +21,25 @@ ctx.lineTo(302.5, 600);
 ctx.stroke();
 ctx.closePath();
 
+const highScores = {};
+
 musics.forEach(music => {
   const list = $(`<li><p>${music.title}</p><button>play</button></li>`);
   $('#main-screen > .list > ul').append(list);
+
+  highScores[music.title] = 0;
 });
+
+if (localStorage.getItem("tttHighScores") === null) {
+  localStorage.setItem("tttHighScores", JSON.stringify(highScores));
+}
 
 $('#main-screen > .list button').each((index, button) => {
   $(button).on('click', () => {
     const newGame = new Game(
       canvas,
-      musics[index].notes,
+      musics[index],
       SOUNDS,
-      musics[index].intervalTime
     );
 
     $('#game-end-screen i').on('click', () => {

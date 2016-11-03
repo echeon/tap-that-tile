@@ -1,9 +1,10 @@
 import Tile from './tile';
 
 const MINIMUM_INTERVAL = 5;
+const localStorage = window.localStorage;
 
 export default class Game {
-  constructor(canvas, music, sounds, intervalTime) {
+  constructor(canvas, music, sounds) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.highestScore = 0;
@@ -11,15 +12,16 @@ export default class Game {
     this.tiles = [];
     this.prevIndex = null;
     this.nextIndex = this.getRandomNumber();
-    this.music = music;
-    this.notes = music.filter(note => note ? true : false);
+    this.music = music.notes;
+    this.notes = music.notes.filter(note => note ? true : false);
     this.notesIndex = 0;
     this.sounds = sounds;
-    this.initIntervalTime = intervalTime;
-    this.intervalTime = intervalTime;
+    this.initIntervalTime = music.intervalTime;
+    this.intervalTime = music.intervalTime;
     this.whenToSpeedUp = Math.min(100, this.notes.length);
     this.interval1 = null;
     this.interval2 = null;
+    this.title = music.title;
 
     this.updateIntervalHelper = this.updateIntervalHelper.bind(this);
     this.addRow = this.addRow.bind(this);
@@ -174,6 +176,8 @@ export default class Game {
           this.removeEventListeners();
 
           this.showOptionsAfterGameOver();
+
+          this.saveScore();
         }
 
         soundGroup.forEach(sound => sound.play());
@@ -181,6 +185,18 @@ export default class Game {
 
         break;
       }
+    }
+  }
+
+  saveScore() {
+    let savedScores = JSON.parse(localStorage.getItem("tttHighScores"));
+    const currHighScore = savedScores[this.title];
+    if (this.currentScore > currHighScore) {
+      const newHighScore = {[this.title]: this.currentScore};
+      console.log(newHighScore);
+      const newScores = Object.assign({}, savedScores, newHighScore);
+      localStorage.setItem("tttHighScores", JSON.stringify(newScores));
+      console.log(localStorage.getItem("tttHighScores"));
     }
   }
 
@@ -328,11 +344,13 @@ export default class Game {
     const sound = new Audio('./music/audio/gameover.wav');
     sound.play();
 
-    this.showOptionsAfterGameOver();
-
     this.clearIntervals();
     this.changeMissedTileColor();
     this.moveRemainingTilesToBaseline();
+
+    this.showOptionsAfterGameOver();
+
+    this.saveScore();
   }
 
   changeMissedTileColor() {
