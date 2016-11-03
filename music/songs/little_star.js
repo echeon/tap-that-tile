@@ -5,7 +5,7 @@ const keyNumbers = [
 const music = {
   title: "Little Star",
   notes: keyNumbers,
-  intervalTime: 13
+  intervalTime: 11
 };
 
 export default music;
