@@ -47,9 +47,7 @@ export default class Game {
 
   increaseSpeed() {
     this.clearIntervals();
-    if (this.intervalTime > MINIMUM_INTERVAL) {
-      this.intervalTime -= 2;
-    }
+    this.intervalTime -= 2;
     this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
     this.inverval2 = window.setInterval(this.addRow, this.intervalTime*30);
   }
@@ -326,12 +324,14 @@ export default class Game {
       this.tiles.shift();
     }
     if (this.currentScore && this.currentScore % this.whenToSpeedUp === 0) {
-      this.increaseSpeed();
-      $('#warning').show();
-      $('#warning').fadeTo(3000, 0, () => {
-        $('#warning').hide();
-        $('#warning').css('opacity', 1);
-      });
+      if (this.intervalTime > MINIMUM_INTERVAL) {
+        this.increaseSpeed();
+        $('#warning').show();
+        $('#warning').fadeTo(3000, 0, () => {
+          $('#warning').hide();
+          $('#warning').css('opacity', 1);
+        });
+      }
     }
   }
 
