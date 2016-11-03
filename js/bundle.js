@@ -88,6 +88,10 @@
 	
 	if (localStorage.getItem("tttHighScores") === null) {
 	  localStorage.setItem("tttHighScores", JSON.stringify(highScores));
+	} else {
+	  var scores = JSON.parse(localStorage.getItem("tttHighScores"));
+	  var newScores = Object.assign({}, highScores, scores);
+	  localStorage.setItem("tttHighScores", JSON.stringify(newScores));
 	}
 	
 	$('#main-screen > .list button').each(function (index, button) {
@@ -96,11 +100,14 @@
 	
 	    $('#game-end-screen i').on('click', function () {
 	      $('#game-end-screen').hide();
+	      $("#high-score").hide();
 	      newGame.reset();
 	      $('#main-screen').show();
 	    });
 	
 	    $("#main-screen").hide();
+	
+	    $("#high-score").show();
 	    newGame.reset();
 	    newGame.play();
 	  });
@@ -158,6 +165,7 @@
 	    this.updateIntervalHelper = this.updateIntervalHelper.bind(this);
 	    this.addRow = this.addRow.bind(this);
 	
+	    this.getHighScore();
 	    this.generateGame();
 	  }
 	
@@ -345,16 +353,21 @@
 	      }
 	    }
 	  }, {
+	    key: 'getHighScore',
+	    value: function getHighScore() {
+	      var savedScores = JSON.parse(localStorage.getItem("tttHighScores"));
+	      $('#high-score span').html(savedScores[this.title]);
+	    }
+	  }, {
 	    key: 'saveScore',
 	    value: function saveScore() {
 	      var savedScores = JSON.parse(localStorage.getItem("tttHighScores"));
 	      var currHighScore = savedScores[this.title];
 	      if (this.currentScore > currHighScore) {
 	        var newHighScore = _defineProperty({}, this.title, this.currentScore);
-	        console.log(newHighScore);
 	        var newScores = Object.assign({}, savedScores, newHighScore);
 	        localStorage.setItem("tttHighScores", JSON.stringify(newScores));
-	        console.log(localStorage.getItem("tttHighScores"));
+	        $('#high-score span').html(this.currentScore);
 	      }
 	    }
 	  }, {

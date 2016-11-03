@@ -258,3 +258,25 @@ div.countdown {
 #warning h1 {
   margin: 0;
 }
+
+#high-score {
+  display: none;
+  width: 403px;
+  height: 600px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: right;
+  color: rgb(200, 200, 200);
+  font-size: 25px;
+  padding-top: 5px;
+  padding-right: 10px;
+}
+
+#high-score p {
+  margin: 0;
+  text-transform: uppercase;
+}

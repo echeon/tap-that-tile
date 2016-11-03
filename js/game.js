@@ -26,6 +26,7 @@ export default class Game {
     this.updateIntervalHelper = this.updateIntervalHelper.bind(this);
     this.addRow = this.addRow.bind(this);
 
+    this.getHighScore();
     this.generateGame();
   }
 
@@ -188,15 +189,19 @@ export default class Game {
     }
   }
 
+  getHighScore() {
+    const savedScores = JSON.parse(localStorage.getItem("tttHighScores"));
+    $('#high-score span').html(savedScores[this.title]);
+  }
+
   saveScore() {
     let savedScores = JSON.parse(localStorage.getItem("tttHighScores"));
     const currHighScore = savedScores[this.title];
     if (this.currentScore > currHighScore) {
       const newHighScore = {[this.title]: this.currentScore};
-      console.log(newHighScore);
       const newScores = Object.assign({}, savedScores, newHighScore);
       localStorage.setItem("tttHighScores", JSON.stringify(newScores));
-      console.log(localStorage.getItem("tttHighScores"));
+      $('#high-score span').html(this.currentScore);
     }
   }
 
