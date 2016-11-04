@@ -18,7 +18,7 @@ export default class Game {
     this.sounds = sounds;
     this.initIntervalTime = music.intervalTime;
     this.intervalTime = music.intervalTime;
-    this.whenToSpeedUp = Math.min(100, this.notes.length);
+    this.whenToSpeedUp = Math.min(50, this.notes.length);
     this.interval1 = null;
     this.interval2 = null;
     this.title = music.title;

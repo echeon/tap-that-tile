@@ -157,7 +157,7 @@
 	    this.sounds = sounds;
 	    this.initIntervalTime = music.intervalTime;
 	    this.intervalTime = music.intervalTime;
-	    this.whenToSpeedUp = Math.min(100, this.notes.length);
+	    this.whenToSpeedUp = Math.min(50, this.notes.length);
 	    this.interval1 = null;
 	    this.interval2 = null;
 	    this.title = music.title;
@@ -191,9 +191,7 @@
 	    key: 'increaseSpeed',
 	    value: function increaseSpeed() {
 	      this.clearIntervals();
-	      if (this.intervalTime > MINIMUM_INTERVAL) {
-	        this.intervalTime -= 2;
-	      }
+	      this.intervalTime -= 2;
 	      this.interval1 = window.setInterval(this.updateIntervalHelper, this.intervalTime);
 	      this.inverval2 = window.setInterval(this.addRow, this.intervalTime * 30);
 	    }
@@ -511,12 +509,14 @@
 	        this.tiles.shift();
 	      }
 	      if (this.currentScore && this.currentScore % this.whenToSpeedUp === 0) {
-	        this.increaseSpeed();
-	        $('#warning').show();
-	        $('#warning').fadeTo(3000, 0, function () {
-	          $('#warning').hide();
-	          $('#warning').css('opacity', 1);
-	        });
+	        if (this.intervalTime > MINIMUM_INTERVAL) {
+	          this.increaseSpeed();
+	          $('#warning').show();
+	          $('#warning').fadeTo(3000, 0, function () {
+	            $('#warning').hide();
+	            $('#warning').css('opacity', 1);
+	          });
+	        }
 	      }
 	    }
 	  }, {
@@ -720,7 +720,7 @@
 	var music = {
 	  title: "Little Star",
 	  notes: keyNumbers,
-	  intervalTime: 13
+	  intervalTime: 11
 	};
 	
 	exports.default = music;
