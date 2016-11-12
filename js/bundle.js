@@ -166,7 +166,6 @@
 	    this.addRow = this.addRow.bind(this);
 	
 	    this.getHighScore();
-	    this.generateGame();
 	  }
 	
 	  _createClass(Game, [{
@@ -238,8 +237,7 @@
 	    key: 'updateIntervalHelper',
 	    value: function updateIntervalHelper() {
 	      if (this.didMissTile()) {
-	        window.clearInterval(this.interval1);
-	        window.clearInterval(this.inverval2);
+	        this.clearIntervals();
 	
 	        this.removeEventListeners();
 	        this.handleMissingTile();
@@ -324,21 +322,12 @@
 	          // if you tap non-black tile
 	          if (!tappedTile.isBlack) {
 	            soundGroup = [new Audio('./music/audio/gameover.wav')];
+	
 	            if (tappedTile.coordY > 450) {
 	              this.moveRemainingTilesToBaseline();
 	            }
 	
-	            this.draw();
-	            this.update();
-	
-	            this.clearIntervals();
-	
-	            this.decrementScore();
-	            this.removeEventListeners();
-	
-	            this.showOptionsAfterGameOver();
-	
-	            this.saveScore();
+	            this.handleTapWrongTile();
 	          }
 	
 	          soundGroup.forEach(function (sound) {
@@ -349,6 +338,21 @@
 	          break;
 	        }
 	      }
+	    }
+	  }, {
+	    key: 'handleTapWrongTile',
+	    value: function handleTapWrongTile() {
+	      this.draw();
+	      this.update();
+	
+	      this.clearIntervals();
+	
+	      this.decrementScore();
+	      this.removeEventListeners();
+	
+	      this.showOptionsAfterGameOver();
+	
+	      this.saveScore();
 	    }
 	  }, {
 	    key: 'getHighScore',
